@@ -1,6 +1,10 @@
 # VLZ.one [<img alt="VectorLogoZone Logo" src="https://vlz.one/favicon.svg" height="90" align="right" />](https://www.vectorlogo.zone/)
 
-URL Shortener for VectorLogoZone
+URL Shortener for VectorLogoZone.  
+
+Really trivial: it takes `vlz.one/XYZ` and redirects to `www.vectorlogo.zone/logos/XYZ/index.html`.
+
+Why?  Because I'm obsessive and don't want Twitter to put an ellipsis on my links.
 
 ## Contributing
 
@@ -11,8 +15,6 @@ Contributions are welcome!  Please follow the standard Github [Fork & Pull Reque
 [GNU Affero General Public License v3.0](LICENSE.txt)
 
 ## Credits
-
-Website:
 
 [![Cloudflare](https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21.svg)](https://www.cloudflare.com/ "CDN")
 [![Git](https://www.vectorlogo.zone/logos/git-scm/git-scm-ar21.svg)](https://git-scm.com/ "Version control")

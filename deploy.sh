@@ -5,6 +5,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+COMMIT=$(git rev-parse --short HEAD)
+LASTMOD=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
 docker build -t vlz-one .
 docker tag vlz-one:latest gcr.io/vectorlogozone/one:latest
 docker push gcr.io/vectorlogozone/one:latest
@@ -14,4 +17,6 @@ gcloud beta run deploy vlz-one \
 	--platform managed \
 	--project vectorlogozone \
     --region us-central1 \
-	--update-env-vars "COMMIT=$(git rev-parse --short HEAD),LASTMOD=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+	--update-env-vars "COMMIT=${COMMIT},LASTMOD=${LASTMOD}"
+
+echo "INFO: deployed ${COMMIT} (${LASTMOD})"

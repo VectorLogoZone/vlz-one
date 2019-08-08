@@ -37,15 +37,14 @@ app.use(async(ctx, next) => {
 app.use(KoaStatic('static'));
 
 const rootRouter = new KoaRouter();
-/*
+
 rootRouter.get('/', async (ctx) => {
-    await ctx.redirect('https://www.vectorlogo.zone/support/urlshortner.html');
+    await ctx.redirect('https://www.vectorlogo.zone/');
 });
 
 rootRouter.get('/index.html', async (ctx) => {
-    await ctx.redirect('https://www.vectorlogo.zone/support/urlshortner.html');
+    await ctx.redirect('https://www.vectorlogo.zone/');
 });
-*/
 
 rootRouter.get('/status.json', (ctx) => {
     const retVal: {[key:string]: any } = {};
