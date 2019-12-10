@@ -27,3 +27,7 @@ Contributions are welcome!  Please follow the standard Github [Fork & Pull Reque
 [![Google Cloud Run](https://www.vectorlogo.zone/logos/google/google-ar21.svg)](https://cloud.google.com/run/ "Hosting")
 
 * [nodemon](https://nodemon.io/)
+
+## Future
+
+Maybe `/icon/xxx.com` that would redirect directly to the icon.svg file (like [Clearbit Logo API](https://clearbit.com/docs#logo-api))
