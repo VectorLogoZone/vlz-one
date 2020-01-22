@@ -34,7 +34,7 @@ app.use(async(ctx, next) => {
 });
 
 
-app.use(KoaStatic('static'));
+app.use(KoaStatic("static", { maxage: 24 * 60 * 60 * 1000 }));
 
 const rootRouter = new KoaRouter();
 
