@@ -1,10 +1,10 @@
 import Koa = require('koa');
-import KoaPinoLogger from 'koa-pino-logger';
 import KoaRouter from 'koa-router';
 import KoaStatic from 'koa-static';
 import * as os from 'os';
 import Pino from 'pino';
 import PinoCaller from 'pino-caller';
+import pinoHttp from 'pino-http';
 
 const app = new Koa();
 app.proxy = true;
@@ -16,7 +16,34 @@ const logger = PinoCaller(Pino({
     serializers: Pino.stdSerializers,
 }));
 
-app.use(KoaPinoLogger({ logger: logger }));
+function CustomPinoLogger(opts: pinoHttp.Options): any {
+    var wrap: any = pinoHttp(opts)
+    function pino(ctx: any, next: any) {
+        wrap(ctx.req, ctx.res)
+        ctx.log = ctx.request.log = ctx.response.log = ctx.req.log
+        return next().catch(function (e: any) {
+            ctx.log.error({
+                res: ctx.res,
+                err: {
+                    type: e.constructor.name,
+                    message: e.message,
+                    stack: e.stack
+                },
+                responseTime: ctx.res.responseTime
+            }, 'request errored')
+            throw e
+        })
+    }
+    pino.logger = wrap.logger
+    return pino
+}
+
+app.use(CustomPinoLogger({
+    autoLogging: {
+        ignorePaths: ['/ping', '/metrics', '/remotelog.json']
+    },
+    logger
+}));
 
 app.use(async(ctx, next) => {
     try {
