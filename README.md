@@ -1,6 +1,6 @@
 # VLZ.one [<img alt="VectorLogoZone Logo" src="https://vlz.one/favicon.svg" height="90" align="right" />](https://www.vectorlogo.zone/)
 
-URL Shortener for VectorLogoZone.  
+URL Shortener for [VectorLogoZone](https://www.vectorlogo.zone/).
 
 Really trivial: it takes `vlz.one/XYZ` and redirects to `www.vectorlogo.zone/logos/XYZ/index.html`.
 
@@ -27,7 +27,9 @@ Contributions are welcome!  Please follow the standard Github [Fork & Pull Reque
 [![Google Cloud Run](https://www.vectorlogo.zone/logos/google/google-ar21.svg)](https://cloud.google.com/run/ "Hosting")
 
 * [nodemon](https://nodemon.io/)
+* [water.css](https://watercss.netlify.app/)
 
 ## Future
 
-Maybe `/icon/xxx.com` that would redirect directly to the icon.svg file (like [Clearbit Logo API](https://clearbit.com/docs#logo-api))
+* /logohandle/imagetype.svg - go directly to imagetype
+* Maybe `/icon/xxx.com` that would redirect directly to the icon.svg file (like [Clearbit Logo API](https://clearbit.com/docs#logo-api))
