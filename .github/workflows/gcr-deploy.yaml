@@ -1,4 +1,4 @@
-name: Build and deploy to Google Cloud Run
+name: build
 
 on:
   push:
@@ -6,10 +6,11 @@ on:
     - master
 
 # Environment variables available to all jobs and steps in this workflow
+# NOTE: these aren't really secret, but there aren't non-secret settings
 env:
-  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  RUN_PROJECT: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: ${{ secrets.RUN_REGION }}
-  SERVICE_NAME: ${{ secrets.RUN_SERVICE }}
+  RUN_SERVICE: ${{ secrets.RUN_SERVICE }}
 
 jobs:
   setup-build-deploy:
@@ -24,13 +25,13 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '275.0.0'
-          service_account_email: ${{ secrets. GCP_SA_EMAIL }}
-          service_account_key: ${{ secrets. GCP_SA_KEY }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       # Configure gcloud CLI
       - name: gcloud Set up
         run: |
-          gcloud config set project $PROJECT_ID
+          gcloud config set project ${RUN_PROJECT}
 
       # Build and push image to Google Container Registry
       - name: Build
@@ -38,7 +39,7 @@ jobs:
           docker build \
             --build-arg COMMIT=${GITHUB_SHA:0:7} \
             --build-arg LASTMOD=$(date -u +%Y-%m-%dT%H:%M:%SZ) \
-            --tag gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .
+            --tag gcr.io/${RUN_PROJECT}/${RUN_SERVICE}:$GITHUB_SHA .
 
       - name: GCloud auth to docker
         run: |
@@ -46,14 +47,14 @@ jobs:
 
       - name: Push to registry
         run: |
-          docker push gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
+          docker push gcr.io/${RUN_PROJECT}/${RUN_SERVICE}:$GITHUB_SHA
 
       # Deploy image to Cloud Run
       - name: Deploy
         run: |
-          gcloud run deploy $SERVICE_NAME \
+          gcloud run deploy ${RUN_SERVICE} \
             --allow-unauthenticated \
-            --image gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
+            --image gcr.io/${RUN_PROJECT}/${RUN_SERVICE}:$GITHUB_SHA \
             --platform managed \
-            --project ${PROJECT_ID} \
-            --region $RUN_REGION
+            --project ${RUN_PROJECT} \
+            --region ${RUN_REGION}
