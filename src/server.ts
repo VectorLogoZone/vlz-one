@@ -4,7 +4,7 @@ import KoaStatic from 'koa-static';
 import * as os from 'os';
 import Pino from 'pino';
 import PinoCaller from 'pino-caller';
-import pinoHttp from 'pino-http';
+import * as PinoHttp from 'pino-http';
 
 const app = new Koa();
 app.proxy = true;
@@ -16,8 +16,8 @@ const logger = PinoCaller(Pino({
     serializers: Pino.stdSerializers,
 }));
 
-function CustomPinoLogger(opts: pinoHttp.Options): any {
-    var wrap: any = pinoHttp(opts)
+function CustomPinoLogger(opts: PinoHttp.Options): any {
+    var wrap: any = PinoHttp.pinoHttp(opts)
     function pino(ctx: any, next: any) {
         wrap(ctx.req, ctx.res)
         ctx.log = ctx.request.log = ctx.response.log = ctx.req.log
@@ -40,7 +40,7 @@ function CustomPinoLogger(opts: pinoHttp.Options): any {
 
 app.use(CustomPinoLogger({
     autoLogging: {
-        ignorePaths: ['/ping', '/metrics', '/remotelog.json']
+        ignorePaths: ['/status.json']
     },
     logger
 }));
@@ -72,6 +72,18 @@ rootRouter.get('/', async (ctx) => {
 rootRouter.get('/index.html', async (ctx) => {
     await ctx.redirect('https://www.vectorlogo.zone/');
 });
+
+function getFirst(value: string | string[] | undefined): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+
+    if (Array.isArray(value)) {
+      return value[0];
+    }
+
+    return value;
+}
 
 rootRouter.get('/status.json', (ctx) => {
     const retVal: {[key:string]: any } = {};
@@ -111,7 +123,7 @@ rootRouter.get('/status.json', (ctx) => {
     ctx.set('Access-Control-Allow-Methods', 'POST, GET');
     ctx.set('Access-Control-Max-Age', '604800');
 
-    const callback = ctx.request.query['callback'];
+    const callback = getFirst(ctx.request.query['callback']);
     if (callback && callback.match(/^[$A-Za-z_][0-9A-Za-z_$]*$/) != null) {
         ctx.type = 'text/javascript';
         ctx.body = callback + '(' + JSON.stringify(retVal) + ');';
