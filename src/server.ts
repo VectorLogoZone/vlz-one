@@ -65,14 +65,6 @@ app.use(KoaStatic("static", { maxage: 24 * 60 * 60 * 1000 }));
 
 const rootRouter = new KoaRouter();
 
-rootRouter.get('/', async (ctx) => {
-    await ctx.redirect('https://www.vectorlogo.zone/');
-});
-
-rootRouter.get('/index.html', async (ctx) => {
-    await ctx.redirect('https://www.vectorlogo.zone/');
-});
-
 function getFirst(value: string | string[] | undefined): string | undefined {
     if (!value) {
       return undefined;
@@ -138,19 +130,9 @@ app.use(rootRouter.routes());
 const handleRegex = new RegExp('^[a-z0-9][-_a-z0-9]*[a-z0-9]$');
 
 app.use(async (ctx, next) => {
-    /*
-    ctx.body = {
-        handle: handle,
-        url: ctx.url,
-        href: ctx.href,
-        originalUrl: ctx.originalUrl,
-        path: ctx.path,
-        origin: ctx.origin
-    };
-    return;
-    */
     const handle = ctx.path.slice(1);
     if (handleRegex.test(handle)) {
+        ctx.set( 'Referrer-Policy', 'unsafe-url' );
         ctx.redirect(`https://www.vectorlogo.zone/logos/${handle}/index.html`);
         //ctx.body = `would redirect to ${handle}`;
         return;
