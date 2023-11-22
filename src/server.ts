@@ -6,6 +6,8 @@ import Pino from 'pino';
 import PinoCaller from 'pino-caller';
 import pinoHttp from 'pino-http';
 
+import { getFirst } from './util'
+
 const app = new Koa();
 app.proxy = true;
 
@@ -16,12 +18,13 @@ const logger = PinoCaller(Pino({
     serializers: Pino.stdSerializers,
 }));
 
-function CustomPinoLogger(opts: pinoHttp.Options): any {
-    var wrap: any = pinoHttp(opts)
-    function pino(ctx: any, next: any) {
+//from https://github.com/pinojs/koa-pino-logger/blob/master/logger.js whose types are messed up
+function CustomPinoLogger(opts:any):any {
+    var wrap:any = pinoHttp(opts)
+    function pino(ctx:any, next:any) {
         wrap(ctx.req, ctx.res)
         ctx.log = ctx.request.log = ctx.response.log = ctx.req.log
-        return next().catch(function (e: any) {
+        return next().catch(function (e:any) {
             ctx.log.error({
                 res: ctx.res,
                 err: {
@@ -37,13 +40,12 @@ function CustomPinoLogger(opts: pinoHttp.Options): any {
     pino.logger = wrap.logger
     return pino
 }
-
-app.use(CustomPinoLogger({
+ app.use(CustomPinoLogger( {
     autoLogging: {
-        ignorePaths: ['/ping', '/metrics', '/remotelog.json']
+        ignorePaths: [ '/favicon.svg', '/status.json' ]
     },
     logger
-}));
+ }));
 
 app.use(async(ctx, next) => {
     try {
@@ -103,7 +105,7 @@ rootRouter.get('/status.json', (ctx) => {
     ctx.set('Access-Control-Allow-Methods', 'POST, GET');
     ctx.set('Access-Control-Max-Age', '604800');
 
-    const callback = ctx.request.query['callback'];
+    const callback = getFirst(ctx.request.query['callback']);
     if (callback && callback.match(/^[$A-Za-z_][0-9A-Za-z_$]*$/) != null) {
         ctx.type = 'text/javascript';
         ctx.body = callback + '(' + JSON.stringify(retVal) + ');';
