@@ -1,5 +1,7 @@
 # vlz.one [<img alt="VectorLogoZone Logo" src="https://vlz.one/favicon.svg" height="90" align="right" />](https://www.vectorlogo.zone/)
 
+[![build](https://github.com/VectorLogoZone/vlz-one/actions/workflows/gcr-deploy.yaml/badge.svg)](https://github.com/VectorLogoZone/vlz-one/actions/workflows/gcr-deploy.yaml)
+
 Short URLs for [VectorLogoZone](https://www.vectorlogo.zone/).
 
 Really trivial: it takes `vlz.one/XYZ` and redirects to `www.vectorlogo.zone/logos/XYZ/index.html`.
