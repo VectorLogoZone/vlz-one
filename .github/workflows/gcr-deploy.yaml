@@ -3,7 +3,9 @@ name: build
 on:
   push:
     branches:
-    - master
+    - main
+
+  workflow_dispatch:
 
 # Environment variables available to all jobs and steps in this workflow
 # NOTE: these aren't really secret, but there aren't non-secret settings
