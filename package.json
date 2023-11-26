@@ -8,7 +8,7 @@
     "@types/koa": "^2.13.12",
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
-    "@types/node": "^20.9.3",
+    "@types/node": "^20.10.0",
     "@types/pino-http": "^5.8.4",
     "nodemon": "^3.0.1",
     "pino-pretty": "^10.2.3",
