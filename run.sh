@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # run locally for dev
 #
@@ -7,16 +7,21 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-# make sure npm packages are installed if there is no node_modules folder
-if [ ! -d "node_modules" ]; then
-  npm install
+#
+# load an .env file if it exists
+#
+ENV_FILE="${1:-./.env}"
+if [ -f "${ENV_FILE}" ]; then
+    echo "INFO: loading '${ENV_FILE}'!"
+    export $(cat "${ENV_FILE}")
 fi
 
-
-export COMMIT=local
-export LASTMOD=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+if [ ! -d "node_modules" ]; then
+    echo "INFO: installing node modules!"
+    npm install
+fi
 
 #
-# run in watch mode
+# run
 #
-npx nodemon
+npm run dev

@@ -1,0 +1,12 @@
+{
+  "compatibility_date": "2025-04-03",
+  "main": "./src/index.ts",
+  "name": "vlz-one",
+  "vars": {
+    "COMMIT": "unknown",
+    "LASTMOD": "unknown"
+  },
+  "version_metadata": {
+    "binding": "CF_VERSION_METADATA"
+  }
+}

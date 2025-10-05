@@ -1,30 +1,18 @@
 {
   "name": "vlz-one",
+  "private": false,
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "license": "AGPL-3.0",
-  "license-actual": "AGPL-3.0-or-later",
-  "devDependencies": {
-    "@types/koa": "^2.13.12",
-    "@types/koa-router": "^7.4.8",
-    "@types/koa-static": "^4.0.4",
-    "@types/node": "^20.10.0",
-    "@types/pino-http": "^5.8.4",
-    "nodemon": "^3.0.1",
-    "pino-pretty": "^10.2.3",
-    "typescript": "^5.3.2"
-  },
-  "dependencies": {
-    "koa": "^2.14.2",
-    "koa-router": "^12.0.1",
-    "koa-static": "^5.0.0",
-    "pino": "^8.16.2",
-    "pino-caller": "^3.4.0",
-    "pino-http": "^8.5.1",
-    "source-map-support": "^0.5.21"
-  },
+  "type": "module",
   "scripts": {
-    "build": "node_modules/.bin/tsc",
-    "start": "node dist/server.js"
+    "dev": "vite dev --port=4000 --strictPort=true",
+    "build": "vite build",
+    "preview": "npm run build && vite preview",
+    "deploy": "bin/setenv.ts && npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.13.8",
+    "@types/node": "^24.6.2",
+    "vite": "^6.3.6",
+    "wrangler": "^4.40.3"
   }
 }
