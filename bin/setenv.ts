@@ -11,7 +11,10 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 function main() {
-    const commit = process.env.WORKERS_CI_COMMIT_SHA || "unknown";
+    let commit = process.env.WORKERS_CI_COMMIT_SHA || "unknown";
+    if (commit.length > 7) {
+        commit = commit.slice(0, 7);
+    }
     const lastmod = new Date().toISOString();
 
     const wranglerPath = path.join(__dirname, "..", "wrangler.json");
