@@ -14,7 +14,12 @@ function StatusHandler(request: Request, env: Env): Response {
     cloudflare:  env.CF_VERSION_METADATA,
   };
   return new Response(JSON.stringify(status, null, 2), {
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET",
+        "Access-Control-Max-Age": "604800",
+        "Content-Type": "application/json" 
+    },
   });
 }
 
@@ -24,7 +29,7 @@ function NotFoundHandler(url: URL): Response {
     "message": "Not found", 
     "url": url.pathname,
   };
-  return new Response(JSON.stringify(retVal), { 
+  return new Response(JSON.stringify(retVal, null, 2), { 
     headers: { "Content-Type": "application/json" },
     status: 404 
   });
