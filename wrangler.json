@@ -2,6 +2,10 @@
   "compatibility_date": "2025-04-03",
   "main": "./src/index.ts",
   "name": "vlz-one",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
   "vars": {
     "COMMIT": "unknown",
     "LASTMOD": "unknown"
